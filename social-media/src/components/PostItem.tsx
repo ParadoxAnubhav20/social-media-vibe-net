@@ -75,21 +75,21 @@ export const PostItem = ({ post, index = 0, onUpdate }: Props) => {
 
   return (
     <div
-      className={`transform transition-all duration-500 ease-out ${
+      className={`transform transition-all duration-500 ease-out h-full ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="relative group transition-all duration-300 hover:scale-105">
+      <div className="relative group transition-all duration-300 hover:scale-105 h-full">
         <div
           className={`absolute -inset-1 rounded-3xl bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-500 blur-md opacity-0 group-hover:opacity-70 transition duration-500 ${
             isLiked ? "opacity-30" : "opacity-0"
           } pointer-events-none`}
         ></div>
 
-        <Link to={`/post/${post.id}`} className="block relative z-10">
-          <div className="w-80 h-auto bg-gradient-to-b from-gray-900 to-gray-800 border border-gray-700 rounded-3xl text-white flex flex-col p-6 overflow-hidden transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-purple-500/20 relative">
+        <Link to={`/post/${post.id}`} className="block relative z-10 h-full">
+          <div className="h-full bg-gradient-to-b from-gray-900 to-gray-800 border border-gray-700 rounded-3xl text-white flex flex-col p-6 overflow-hidden transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-purple-500/20 relative">
             {/* Trending badge (conditionally rendered) */}
             {isTrending && (
               <div className="absolute top-3 right-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 animate-pulse">
@@ -129,12 +129,12 @@ export const PostItem = ({ post, index = 0, onUpdate }: Props) => {
               </div>
             </div>
 
-            {/* Title with animated gradient on hover */}
-            <h3 className="font-bold text-lg mb-3 tracking-tight line-clamp-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-200 group-hover:from-purple-300 group-hover:to-pink-200 transition-all duration-300">
+            {/* Title with animated gradient on hover - Fixed height */}
+            <h3 className="font-bold text-lg mb-3 tracking-tight line-clamp-2 min-h-14 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-200 group-hover:from-purple-300 group-hover:to-pink-200 transition-all duration-300">
               {post.title}
             </h3>
 
-            {/* Image Banner with hover effect */}
+            {/* Image Banner with hover effect - Fixed height */}
             <div className="overflow-hidden rounded-2xl mb-4 h-40 bg-gray-800 group/image">
               {post.image_url ? (
                 <div className="relative w-full h-full">
@@ -158,33 +158,37 @@ export const PostItem = ({ post, index = 0, onUpdate }: Props) => {
               )}
             </div>
 
-            {/* Content Preview */}
-            {post.content && (
-              <p className="text-sm text-gray-300 mb-4 line-clamp-2 italic">
-                {post.content}
-              </p>
-            )}
+            {/* Content Preview - Fixed height */}
+            <div className="min-h-16 mb-4">
+              {post.content && (
+                <p className="text-sm text-gray-300 line-clamp-2 italic">
+                  {post.content}
+                </p>
+              )}
+            </div>
 
-            {/* Tags with hover effect */}
-            {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {post.tags.slice(0, 3).map((tag: string, index: number) => (
-                  <span
-                    key={index}
-                    className="text-xs px-2 py-1 bg-purple-900/40 rounded-full text-purple-300 border border-purple-800/30 hover:bg-purple-800/60 transition-colors duration-300 cursor-pointer"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-                {post.tags.length > 3 && (
-                  <span className="text-xs px-2 py-1 bg-gray-800/50 rounded-full text-gray-400 border border-gray-700/50 hover:bg-gray-700/70 transition-colors duration-300 cursor-pointer">
-                    +{post.tags.length - 3}
-                  </span>
-                )}
-              </div>
-            )}
+            {/* Tags with hover effect - Fixed height container */}
+            <div className="min-h-8 mb-4">
+              {post.tags && post.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.slice(0, 3).map((tag: string, index: number) => (
+                    <span
+                      key={index}
+                      className="text-xs px-2 py-1 bg-purple-900/40 rounded-full text-purple-300 border border-purple-800/30 hover:bg-purple-800/60 transition-colors duration-300 cursor-pointer"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                  {post.tags.length > 3 && (
+                    <span className="text-xs px-2 py-1 bg-gray-800/50 rounded-full text-gray-400 border border-gray-700/50 hover:bg-gray-700/70 transition-colors duration-300 cursor-pointer">
+                      +{post.tags.length - 3}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
 
-            {/* Footer: Likes and Comments */}
+            {/* Footer: Likes and Comments - Always at bottom */}
             <div className="flex justify-between items-center mt-auto pt-3 border-t border-gray-700/50 text-sm font-medium">
               <button
                 onClick={handleLikeClick}

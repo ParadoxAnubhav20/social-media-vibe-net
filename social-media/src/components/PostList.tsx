@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../supabase-client";
 import { PostItem } from "./PostItem";
+
 export interface Post {
   id: number;
   title: string;
@@ -25,18 +26,25 @@ export const PostList = () => {
     queryKey: ["posts"],
     queryFn: fetchPosts,
   });
+
   if (isLoading) {
-    return <div> Loading posts...</div>;
+    return <div className="flex justify-center p-6">Loading posts...</div>;
   }
 
   if (error) {
-    return <div> Error: {error.message}</div>;
+    return (
+      <div className="flex justify-center p-6 text-red-500">
+        Error: {error.message}
+      </div>
+    );
   }
-  console.log(data);
+
   return (
-    <div className="flex flex-wrap gap-6 justify-center">
-      {data?.map((post, key) => (
-        <PostItem post={post} key={key} />
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+      {data?.map((post) => (
+        <div key={post.id} className="h-full">
+          <PostItem post={post} />
+        </div>
       ))}
     </div>
   );
