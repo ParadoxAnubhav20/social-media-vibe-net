@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Post } from "./PostList";
 import { supabase } from "../supabase-client";
@@ -13,6 +12,15 @@ interface PostWithCommunity extends Post {
   communities: {
     name: string;
   };
+}
+
+// Extend the PostItem component props to include the onUpdate handler
+declare module "./PostItem" {
+  interface Props {
+    post: Post;
+    index?: number;
+    onUpdate?: (updates: Partial<Post>) => void;
+  }
 }
 
 export const fetchCommunityPost = async (
@@ -42,28 +50,6 @@ export const fetchCommunityPost = async (
       name: communityData.name,
     },
   }));
-
-  /* Option 2: If the RPC approach doesn't work, you could modify the query like this:
-  const { data, error } = await supabase
-    .from("posts")
-    .select(`
-      *,
-      communities(name),
-      likes:post_likes(count),
-      comments:post_comments(count)
-    `)
-    .eq("community_id", communityId)
-    .order("created_at", { ascending: false });
-
-  if (error) throw new Error(error.message);
-  
-  // Transform the data to match the expected format
-  return (data as any[]).map(post => ({
-    ...post,
-    like_count: post.likes[0]?.count || 0,
-    comment_count: post.comments[0]?.count || 0
-  }));
-  */
 };
 
 export const CommunityDisplay = ({ communityId }: Props) => {
@@ -119,10 +105,11 @@ export const CommunityDisplay = ({ communityId }: Props) => {
 
       {data && data.length > 0 ? (
         <div className="flex flex-wrap gap-6 justify-center">
-          {data.map((post) => (
+          {data.map((post, index) => (
             <PostItem
               key={post.id}
               post={post}
+              index={index}
               onUpdate={(updates) => handlePostUpdate(post.id, updates)}
             />
           ))}

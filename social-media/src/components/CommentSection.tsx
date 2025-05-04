@@ -185,28 +185,28 @@ const CommentItem = ({
     setEditText(comment.content);
   };
 
-  const formatTimestamp = (timestamp: string) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffMs = now.getTime() - date.getTime();
-    const diffMins = Math.round(diffMs / 60000);
-    const diffHours = Math.round(diffMs / 3600000);
-    const diffDays = Math.round(diffMs / 86400000);
+  // const formatTimestamp = (timestamp: string) => {
+  //   const date = new Date(timestamp);
+  //   const now = new Date();
+  //   const diffMs = now.getTime() - date.getTime();
+  //   const diffMins = Math.round(diffMs / 60000);
+  //   const diffHours = Math.round(diffMs / 3600000);
+  //   const diffDays = Math.round(diffMs / 86400000);
 
-    if (diffMins < 60) {
-      return `${diffMins} ${diffMins === 1 ? "minute" : "minutes"} ago`;
-    } else if (diffHours < 24) {
-      return `${diffHours} ${diffHours === 1 ? "hour" : "hours"} ago`;
-    } else if (diffDays < 7) {
-      return `${diffDays} ${diffDays === 1 ? "day" : "days"} ago`;
-    } else {
-      return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
-      });
-    }
-  };
+  //   if (diffMins < 60) {
+  //     return `${diffMins} ${diffMins === 1 ? "minute" : "minutes"} ago`;
+  //   } else if (diffHours < 24) {
+  //     return `${diffHours} ${diffHours === 1 ? "hour" : "hours"} ago`;
+  //   } else if (diffDays < 7) {
+  //     return `${diffDays} ${diffDays === 1 ? "day" : "days"} ago`;
+  //   } else {
+  //     return date.toLocaleDateString("en-US", {
+  //       month: "short",
+  //       day: "numeric",
+  //       year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
+  //     });
+  //   }
+  // };
 
   const hasReplies = comment.children && comment.children.length > 0;
   const replyCount = hasReplies ? comment.children!.length : 0;

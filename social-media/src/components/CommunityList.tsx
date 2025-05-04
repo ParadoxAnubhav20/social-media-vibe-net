@@ -28,7 +28,11 @@ export const fetchCommunities = async (): Promise<Community[]> => {
   }));
 };
 
-const CommunityCard = ({ community }) => {
+interface CommunityCardProps {
+  community: Community;
+}
+
+const CommunityCard = ({ community }: CommunityCardProps) => {
   const formattedDate = new Date(community.created_at).toLocaleDateString(
     "en-US",
     {

@@ -3,7 +3,7 @@ import { supabase } from "../supabase-client";
 import { LikeButton } from "./LikeButton";
 import { CommentSection } from "./CommentSection";
 import { useState, useEffect } from "react";
-import { ChevronUp, Share2, Bookmark, Eye } from "lucide-react";
+import { ChevronUp, Share2, Eye } from "lucide-react";
 
 interface Props {
   postId: number;
@@ -39,7 +39,6 @@ export const PostDetail = ({ postId }: Props) => {
   const [viewCount, setViewCount] = useState(
     Math.floor(Math.random() * 1000) + 100
   );
-  const [bookmarked, setBookmarked] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -93,10 +92,6 @@ export const PostDetail = ({ postId }: Props) => {
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     alert("Link copied to clipboard!");
-  };
-
-  const handleBookmark = () => {
-    setBookmarked(!bookmarked);
   };
 
   const scrollToTop = () => {

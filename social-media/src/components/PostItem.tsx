@@ -1,14 +1,28 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-import { Post } from "./PostList";
 import { Heart, MessageCircle, Eye, TrendingUp } from "lucide-react";
+
+// Updated Post interface with all the properties being used
+export interface Post {
+  id: number;
+  title: string;
+  content?: string;
+  created_at?: string;
+  like_count?: number;
+  comment_count?: number;
+  image_url?: string;
+  avatar_url?: string;
+  username?: string;
+  tags?: string[];
+}
 
 interface Props {
   post: Post;
   index?: number;
+  onUpdate?: (updates: Partial<Post>) => void;
 }
 
-export const PostItem = ({ post, index = 0 }: Props) => {
+export const PostItem = ({ post, index = 0, onUpdate }: Props) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(post.like_count || 0);
   const [isVisible, setIsVisible] = useState(false);
@@ -24,11 +38,20 @@ export const PostItem = ({ post, index = 0 }: Props) => {
     return () => clearTimeout(timer);
   }, [index]);
 
-  const handleLikeClick = (e) => {
+  const handleLikeClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsLiked(!isLiked);
-    setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+
+    const newIsLiked = !isLiked;
+    const newLikeCount = isLiked ? likeCount - 1 : likeCount + 1;
+
+    setIsLiked(newIsLiked);
+    setLikeCount(newLikeCount);
+
+    // If onUpdate prop exists, call it with the updated like count
+    if (onUpdate) {
+      onUpdate({ like_count: newLikeCount });
+    }
   };
 
   // Calculate how long ago the post was created
@@ -149,7 +172,7 @@ export const PostItem = ({ post, index = 0 }: Props) => {
             {/* Tags with hover effect */}
             {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
-                {post.tags.slice(0, 3).map((tag, index) => (
+                {post.tags.slice(0, 3).map((tag: string, index: number) => (
                   <span
                     key={index}
                     className="text-xs px-2 py-1 bg-purple-900/40 rounded-full text-purple-300 border border-purple-800/30 hover:bg-purple-800/60 transition-colors duration-300 cursor-pointer"

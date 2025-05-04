@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import { Link } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import {
   Menu,
   X,
-  ChevronDown,
   Home,
   PenSquare,
   Users,
@@ -205,8 +204,19 @@ export const Navbar = () => {
   );
 };
 
+// Define interfaces for the NavLink components
+interface NavLinkProps {
+  to: string;
+  icon: ReactNode;
+  label: string;
+}
+
+interface MobileNavLinkProps extends NavLinkProps {
+  onClick: () => void;
+}
+
 // Desktop Navigation Link component
-const NavLink = ({ to, icon, label }) => (
+const NavLink = ({ to, icon, label }: NavLinkProps) => (
   <Link
     to={to}
     className="flex items-center px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-purple-500/20 transition-colors"
@@ -217,7 +227,7 @@ const NavLink = ({ to, icon, label }) => (
 );
 
 // Mobile Navigation Link component
-const MobileNavLink = ({ to, icon, label, onClick }) => (
+const MobileNavLink = ({ to, icon, label, onClick }: MobileNavLinkProps) => (
   <Link
     to={to}
     onClick={onClick}

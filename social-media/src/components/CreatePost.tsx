@@ -61,7 +61,7 @@ export const CreatePost = () => {
     enabled: !!user,
   });
 
-  const { mutate, isPending, isError, isSuccess, error } = useMutation({
+  const { mutate, isPending, isError, isSuccess } = useMutation({
     mutationFn: (data: { post: PostInput; imageFile: File | null }) => {
       return createPost(data.post, data.imageFile);
     },
