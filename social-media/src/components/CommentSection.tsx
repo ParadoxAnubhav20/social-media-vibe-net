@@ -66,13 +66,12 @@ const updateComment = async (
     throw new Error("You must be logged in to update comments.");
   }
 
-  // For testing purposes, we're removing the user_id check
-  // In production, you'd keep the .eq("user_id", userId) check
+  // In production, keep the .eq("user_id", userId) check
   const { error } = await supabase
     .from("comments")
     .update({ content: newContent })
-    .eq("id", commentId);
-  // .eq("user_id", userId); // Ensure user can only edit their own comments
+    .eq("id", commentId)
+    .eq("user_id", userId); // Ensure user can only edit their own comments
 
   if (error) throw new Error(error.message);
 };
@@ -82,13 +81,11 @@ const deleteComment = async (commentId: number, userId?: string) => {
     throw new Error("You must be logged in to delete comments.");
   }
 
-  // For testing purposes, we're removing the user_id check
-  // In production, you'd keep the .eq("user_id", userId) check
   const { error } = await supabase
     .from("comments")
     .delete()
-    .eq("id", commentId);
-  // .eq("user_id", userId); // Ensure user can only delete their own comments
+    .eq("id", commentId)
+    .eq("user_id", userId); // Ensure user can only delete their own comments
 
   if (error) throw new Error(error.message);
 };
@@ -121,8 +118,7 @@ const CommentItem = ({
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  // Always show edit/delete for testing purposes
-  // In production, you'd use: const isCommentOwner = user?.id === comment.user_id;
+  // In production : const isCommentOwner = user?.id === comment.user_id;
   const isCommentOwner = user ? true : false; // Show controls if user is logged in
 
   const replyMutation = useMutation({
@@ -184,29 +180,6 @@ const CommentItem = ({
     setIsEditing(false);
     setEditText(comment.content);
   };
-
-  // const formatTimestamp = (timestamp: string) => {
-  //   const date = new Date(timestamp);
-  //   const now = new Date();
-  //   const diffMs = now.getTime() - date.getTime();
-  //   const diffMins = Math.round(diffMs / 60000);
-  //   const diffHours = Math.round(diffMs / 3600000);
-  //   const diffDays = Math.round(diffMs / 86400000);
-
-  //   if (diffMins < 60) {
-  //     return `${diffMins} ${diffMins === 1 ? "minute" : "minutes"} ago`;
-  //   } else if (diffHours < 24) {
-  //     return `${diffHours} ${diffHours === 1 ? "hour" : "hours"} ago`;
-  //   } else if (diffDays < 7) {
-  //     return `${diffDays} ${diffDays === 1 ? "day" : "days"} ago`;
-  //   } else {
-  //     return date.toLocaleDateString("en-US", {
-  //       month: "short",
-  //       day: "numeric",
-  //       year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
-  //     });
-  //   }
-  // };
 
   const hasReplies = comment.children && comment.children.length > 0;
   const replyCount = hasReplies ? comment.children!.length : 0;

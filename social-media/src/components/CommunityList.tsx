@@ -13,7 +13,7 @@ export interface Community {
 }
 
 export const fetchCommunities = async (): Promise<Community[]> => {
-  // Simulate member count for demo purposes
+  // Simulate member count
   const { data, error } = await supabase
     .from("communities")
     .select("*")
@@ -21,7 +21,6 @@ export const fetchCommunities = async (): Promise<Community[]> => {
 
   if (error) throw new Error(error.message);
 
-  // Add simulated member counts (in a real app this would come from the database)
   return (data as Community[]).map((community) => ({
     ...community,
     member_count: Math.floor(Math.random() * 300) + 5,

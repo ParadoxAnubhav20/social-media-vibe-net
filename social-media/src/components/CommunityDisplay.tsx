@@ -26,15 +26,12 @@ declare module "./PostItem" {
 export const fetchCommunityPost = async (
   communityId: number
 ): Promise<PostWithCommunity[]> => {
-  // Option 1: Use the same RPC function as PostList but filter by community_id
   const { data, error } = await supabase
     .rpc("get_posts_with_counts")
     .eq("community_id", communityId)
     .order("created_at", { ascending: false });
 
   if (error) throw new Error(error.message);
-
-  // Get community name with a separate query since RPC might not include it
   const { data: communityData, error: communityError } = await supabase
     .from("communities")
     .select("name")

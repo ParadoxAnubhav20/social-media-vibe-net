@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { Heart, MessageCircle, Eye, TrendingUp } from "lucide-react";
 
-// Updated Post interface with all the properties being used
 export interface Post {
   id: number;
   title: string;
