@@ -1,6 +1,6 @@
 ## 🚀 Introduction
 
-A fully featured Social Media Website Vibe.Net using modern web technologies. This project features real-time interactions, GitHub authentication, and stunning glassy UI elements with glowing gradient effects. Perfect for developers who want to dive into building dynamic, interactive, and beautifully designed web applications.
+A fully featured Social Media Website Vibe.Net using modern web technologies. This project features real-time interactions, GitHub authentication, and stunning glassy UI elements with glowing gradient effects.Enabled users to create, read, update, and delete comments, with real-time updates and seamless interaction for both posts and comments.
 
 ## ⚙️ Tech Stack
 
