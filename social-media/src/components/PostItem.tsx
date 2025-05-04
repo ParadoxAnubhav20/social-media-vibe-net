@@ -119,9 +119,6 @@ export const PostItem = ({ post, index = 0, onUpdate }: Props) => {
                   </div>
                 )}
                 <div className="flex flex-col">
-                  <span className="text-sm font-medium text-gray-200">
-                    {post.username || "Anonymous"}
-                  </span>
                   <span className="text-xs text-gray-400 flex items-center gap-1">
                     {getTimeAgo()}
                   </span>
