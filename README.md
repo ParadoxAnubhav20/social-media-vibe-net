@@ -37,8 +37,8 @@ A fully featured Social Media Website Vibe.Net using modern web technologies. Th
 Run the following commands in your terminal:
 
 ```bash
-git clone https://github.com/machadop1407/social-media-vite-supabase.git
-cd social-media-tutorial
+https://github.com/ParadoxAnubhav20/social-media-vibe-net
+cd social-media
 ```
 
 ### Installation
