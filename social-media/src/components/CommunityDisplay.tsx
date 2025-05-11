@@ -1,7 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Post } from "./PostList";
 import { supabase } from "../supabase-client";
-import { PostItem } from "./PostItem";
+import { PostItem, Post } from "./PostItem";
 import { Loader2 } from "lucide-react";
 
 interface Props {
@@ -14,15 +13,6 @@ interface PostWithCommunity extends Post {
   };
 }
 
-// Extend the PostItem component props to include the onUpdate handler
-declare module "./PostItem" {
-  interface Props {
-    post: Post;
-    index?: number;
-    onUpdate?: (updates: Partial<Post>) => void;
-  }
-}
-
 export const fetchCommunityPost = async (
   communityId: number
 ): Promise<PostWithCommunity[]> => {
@@ -32,6 +22,7 @@ export const fetchCommunityPost = async (
     .order("created_at", { ascending: false });
 
   if (error) throw new Error(error.message);
+
   const { data: communityData, error: communityError } = await supabase
     .from("communities")
     .select("name")
@@ -57,7 +48,7 @@ export const CommunityDisplay = ({ communityId }: Props) => {
     queryFn: () => fetchCommunityPost(communityId),
   });
 
-  // Create a function to handle post updates that can be passed to PostItem
+  // Handle post updates (like counts, etc)
   const handlePostUpdate = (postId: number, updates: Partial<Post>) => {
     // Update the cache directly for immediate UI feedback
     queryClient.setQueryData(
@@ -100,15 +91,17 @@ export const CommunityDisplay = ({ communityId }: Props) => {
         {communityName} Posts
       </h2>
 
+      {/* Posts Grid */}
       {data && data.length > 0 ? (
-        <div className="flex flex-wrap gap-6 justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.map((post, index) => (
-            <PostItem
-              key={post.id}
-              post={post}
-              index={index}
-              onUpdate={(updates) => handlePostUpdate(post.id, updates)}
-            />
+            <div key={post.id} className="h-full">
+              <PostItem
+                post={post}
+                index={index}
+                onUpdate={(updates) => handlePostUpdate(post.id, updates)}
+              />
+            </div>
           ))}
         </div>
       ) : (
@@ -122,3 +115,5 @@ export const CommunityDisplay = ({ communityId }: Props) => {
     </div>
   );
 };
+
+export default CommunityDisplay;
